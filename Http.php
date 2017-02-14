@@ -226,15 +226,19 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 			}
 	}
 	public function db(){
-		return $this->db;
+		if(DB_STATUS == true){
+			return $this->db;
+		}else{ die($this->setHeader("500","Enble DB_STATUS in config.php")); }
 	}
 }
 function http(){
 	return new Http();
 }
 function db(){
-	$dbc = new Http();
-	return $dbc->db;
+	if(DB_STATUS == true){
+		$dbc = new Http();
+		return $dbc->db;
+	}else{ die($this->setHeader("500","Enble DB_STATUS in config.php")); }
 }
 function getError($number, $msg, $file, $line, $vars){
 	   $error = debug_backtrace(); #var_dump($error);
