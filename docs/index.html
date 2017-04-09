@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="wrapper">
-<h2 align="center">API's User Guide</h2>
+<h2 align="center">Developer Guide</h2>
 <div class="content-left">
 <br><hr><br>
 <h3 align="center">Web Server</h3>
@@ -20,16 +20,17 @@
 <h3>Route</h3>
 <pre>
 <code class="language-php">
-    #==============================================#
-    define("SHA",false); # Small Http::SH Authentication [Don't remove it]
-    #==============================================#
-    require_once 'Http.php';
-    $app = new Http();
+    # Basic Routing
     $app->get('/',function($app){
             echo $app->json(["Welcome to SH server"]);
         });
 	$app->post('/',function($app){
             echo 'Data posting...';
+        });
+    # Dynamic Routing
+    $app->get('/name/:firstname',function($app,$req,$res){
+            #echo $req->firstname;
+            $res->json($req->firstname);
         });
     $app->run();
 </code> 
@@ -76,6 +77,8 @@
 <code class="language-php">
 	# Inside of html folder create filename.php
 	Http::html('test'); # View file 
+	# OR
+	$app = new Http;
 	$app->html('header')->html('test'); # html/test.php file include
 	$app->view('test');
 </code> 
@@ -85,6 +88,8 @@
 <code class="language-php">
 	# Inside of model folder create classname.php
 	Http::model('test')->func(); # running
+	# OR
+	$app = new Http;
 	$app->model('test'); # html/test.php file include
 </code> 
 </pre>
@@ -92,6 +97,8 @@
 <pre>
 <code class="language-php">
 	# Inside of controller folder create classname.php
+	$app->get('/test','Class::Method');
+	# OR
 	$app->routes('POST /parent_url',['sub_url'=>'Class::Method']);
 	$app->routes('POST /user',['update'=>'User::update','delete'=>'User::delete']);
 </code> 
@@ -111,7 +118,7 @@
 <pre>
 <code class="language-php">	
 	$file = $app->body();
-	$file_path = 'uploads/'.time().'-filename'; # Without extension because file map .MP3,.MP4 etc.
+	$file_path = 'uploads/'.time().'-filename'; # Without extension because file may be .MP3,.MP4 etc.
 	$app->file_save($file_path,$file->photo);
 </code> 
 </pre>
@@ -119,17 +126,24 @@
 <pre>
 <code class="language-php">	
 	$file = $app->body();
+
+	# to get extension
+
+    $explode 	  = explode(";base64,",$file->photo); # ;base64,
+	$data		  = explode("/",$explode[0]);
+	$extension    = $data[1];
+
 	$app->library('ImageResize',false);
 	$image = ImageResize::createFromString($app->file_decode($file->photo));	
 	$image->scale(50); # $image->resize(800, 600); # $image->crop(200, 200);
-	$image->save('uploads/image_string.jpg');	
-					[OR]
+	$image->save('uploads/image_string.'.$extension);	
+					#[OR]
 	$app->library('ImageResize',false);
-	$image = new ImageResize('uploads/image.jpg');	
+	$image = new ImageResize('uploads/image.jpg');
 	$image->scale(50); # $image->resize(800, 600); # $image->crop(200, 200);
 	$image->save('uploads/image.jpg');
-    
-    Reference : https://github.com/eventviva/php-image-resize
+
+	Reference : https://github.com/eventviva/php-image-resize
 </code> 
 </pre>
 <h3>Form inputs</h3>
@@ -162,10 +176,9 @@
 
 	Http::db()->query(""); 	OR  db()->query("");	
 	(OR)
-	(new Http)->db->query("");
-    
-    Reference : http://medoo.in
+	(new Http)->db->query("");    
 </code> 
+<b>Reference : <a target="_blank" href="https://www.codeigniter.com/user_guide/database/results.html">Query Builder Document</a></b>
 </pre>
 <h3>Extender routes</h3>
 <pre>
@@ -239,6 +252,95 @@
 	echo Curl::delete($url,json_encode($result),true);
 </code> 
 </pre>
+<h3>Pagination Options</h3>
+<pre>
+<code class="language-php">
+    $app->get('/users',function($app,$req){ 
+
+	if($req->session->get('user_total') == ""){
+		$q  = $app->db->query("SELECT count(id) as total FROM  csv_table");
+		$result= $q->result_object();
+		$req->session->set('user_total',$result[0]->total); 
+	}
+
+	$totalRecords = $req->session->get('user_total');
+ 
+	$paginator = $app->library('Paginator');
+	$paginator->itemsPerPage = 10;
+	$paginator->total = ($totalRecords/$paginator->itemsPerPage);
+	$paginator->_link = 'http://localhost:83/users/';
+
+	//get record from database and show	
+	$records = $app->db->query("Select id from csv_table LIMIT 0, 10");
+	foreach($records->result_object() as $obj){
+			echo $obj->id."<br>";
+	}
+
+	$paginator->paginate();
+	echo 'Total:'.$totalRecords.' of '.$paginator->itemsPerPage;
+
+});
+$app->get('/users/:id',function($app,$req){
+
+	if($req->session->get('user_total') == ""){
+		$q  = $app->db->query("SELECT count(id) as total FROM  csv_table");
+		$result= $q->result_object();
+		$req->session->set('user_total',$result[0]->total); 
+	}
+    $totalRecords = $req->session->get('user_total');
+ 
+	$paginator = $app->library('Paginator');
+	$paginator->itemsPerPage = 10;
+	$paginator->total = ($totalRecords/$paginator->itemsPerPage);
+	$paginator->_link = 'http://localhost:83/users/';
+	
+	$id = (int)$req->id;
+	$currentPage = $req->id-1;
+	$limiter     =  $currentPage*$paginator->itemsPerPage;
+
+	//get record from database and show	
+	$records = $app->db->query("Select id from csv_table LIMIT ".$limiter.", ".$paginator->itemsPerPage);
+	foreach($records->result_object() as $obj){
+			echo $obj->id."<br>";
+	}
+	//print
+	$paginator->paginate($req->id);
+	echo 'Total:'.$totalRecords.' of '.$req->id*$paginator->itemsPerPage;
+});
+</code> 
+</pre>
+<h3>Command Options</h3>
+<pre>
+<code class="language-php">
+    [ Command Options ]
+
+    php sh create controller:phper
+
+	[ Options ]
+
+	-v , -version						Display the version
+	-h , -help							Command Help
+
+	[ Create Command ]
+	create controller:controllername	Create controller
+	create model:modelname				Create model
+	create library:libraryname			Create library
+	create package:packagename			Create package
+	create extender:extendername		Create extender
+
+	[ Remove Command ]
+	remove controller:controllername	Remove controller
+	remove model:modelname				Remove model
+	remove library:libraryname			Remove library
+	remove package:packagename			Remove package
+	remove extender:extendername		Remove extender
+	remove module:modulename			Remove module
+
+	[ Import Command ]
+	import package:packagename			Import package
+	import module:modulename			Import module
+</code> 
+</pre>
 </div>
 <div style="clear: both"></div>
 <pre>
@@ -249,15 +351,3 @@
 </div>
 </body>
 </html>
-
-<!--
-
-Language 	    Class
-HTML 	        language-markup
-CSS 	        language-css
-JavaScript 	    language-javascript
-CoffeeScript 	language-coffeescript
-PHP 	        language-php
-Ruby 	        language-ruby
-Go 	            language-go 
--->

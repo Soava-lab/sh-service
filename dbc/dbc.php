@@ -150,7 +150,7 @@ class dbc
 			throw new Exception($e->getMessage());
 		}
 	}
-
+	
 	public function query($query)
 	{
 		if ($this->debug_mode)
