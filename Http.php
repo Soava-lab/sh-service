@@ -321,7 +321,7 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 		}
 	}
 	protected function dataTypesList(){
-		return array('basic'=>'([a-zA-Z0-9\-\_]+)','int'=>'([0-9]+)','string'=>'([a-zA-Z0-9\-\_]+)','base64'=>'([a-zA-Z0-9+/]+={0,2}$)','any'=>'([A-Za-z0-9_~\-!\@\=\$\%\&\.\*\(\)]+$)');
+		return array('basic'=>'([a-zA-Z0-9\-\_]+)','int'=>'([0-9]+)','string'=>'([a-zA-Z0-9\-\_]+)','base64'=>'([a-zA-Z0-9+/]+={0,2}$)','any'=>'([a-zA-Z0-9\-\_\=\@\!\&\$\#]+)');
 	}
 	public function run($sh=NULL){
 		# Modules
