@@ -11,8 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "soava-lab/sh-service": "dev-master"
+        "php": ">=5.4"
     },
     "config": {
         "preferred-install": "dist",
