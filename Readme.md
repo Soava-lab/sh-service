@@ -1,12 +1,10 @@
 # sh service
 
-**sh service is small & fastest web framework**
+**sh-service is small & fastest php framework developed by phpbala@2016**
 
 [![Latest Stable Version](https://poser.pugx.org/soava-lab/sh-service/v/stable)](https://packagist.org/packages/soava-lab/sh-service)
 [![Total Downloads](https://poser.pugx.org/soava-lab/sh-service/downloads)](https://packagist.org/packages/soava-lab/sh-service)
 
-<p align="center"><img src="http://phpbala.in/wp-content/uploads/2017/02/cropped-soava-logo-1.png"></p>
+<img src="http://phpbala.in/wp-content/uploads/2017/02/cropped-soava-logo-1.png">
 
-<p align="center">sh-service is small & fastest php framework developed by phpbala@2016</p>
-
-<p align="center"><a href="http://phpbala.in/sh/docs" target="_blank">Developer guide</a></p>
+<a href="http://phpbala.in/sh/docs" target="_blank">Developer guide</a>
