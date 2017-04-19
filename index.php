@@ -5,9 +5,8 @@ setlocale(LC_ALL, 'en_US.UTF8');
 #==============================================#
 define("SHA",false); # Small Http::SH Authentication [ Don't remove it ]
 #==============================================#
-# Notes : if you create a project via composer
+# Notes : if you create a project via composer it will help to access third party.
 require 'vendor/autoload.php';
-# Notes : if you download directly no need to include above file : vendor/autoload.php
 
 require 'Http.php';
 
