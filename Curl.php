@@ -1,6 +1,6 @@
 <?php
 class Curl{
-	public static function post($url,$post_fields=array(),$json=false){   # true means direct json format print || false means object oriented format
+	public static function post($url,$post_fields=array(),$json=false){ $url = self::localUrl($url);   # true means direct json format print || false means object oriented format
             $KEY = SH_KEY; $VALUE = SH_VALUE;
             if(defined("API_KEY") && defined("API_TOKEN")){
                 $KEY = API_KEY; $VALUE = API_TOKEN;
@@ -36,7 +36,7 @@ class Curl{
 			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 		 } return $base64;
 	 }
-	 public static function form_data($url,$post_fields=array(),$json=false){   # true means direct json format print || false means object oriented format
+	 public static function form_data($url,$post_fields=array(),$json=false){ $url = self::localUrl($url);   # true means direct json format print || false means object oriented format
 			$KEY = SH_KEY; $VALUE = SH_VALUE;
             if(defined("API_KEY") && defined("API_TOKEN")){
                 $KEY = API_KEY; $VALUE = API_TOKEN;
@@ -59,7 +59,7 @@ class Curl{
             }
      }     
        
-     public static function get($url,$json=false){
+     public static function get($url,$json=false){ $url = self::localUrl($url);
             $KEY = SH_KEY; $VALUE = SH_VALUE;
             if(defined("API_KEY") && defined("API_TOKEN")){
                 $KEY = API_KEY; $VALUE = API_TOKEN;
@@ -79,7 +79,7 @@ class Curl{
                 return json_decode($server_output);
             }
      }
-	 public static function put($url,$post_fields,$json=false){ 
+	 public static function put($url,$post_fields,$json=false){  $url = self::localUrl($url);
             $KEY = SH_KEY; $VALUE = SH_VALUE;
             if(defined("API_KEY") && defined("API_TOKEN")){
                 $KEY = API_KEY; $VALUE = API_TOKEN;
@@ -101,7 +101,7 @@ class Curl{
                 return json_decode($server_output);
             }
        }
-	 public static function delete($url,$post_fields,$json=false){
+	 public static function delete($url,$post_fields,$json=false){ $url = self::localUrl($url);
             $KEY = SH_KEY; $VALUE = SH_VALUE;
             if(defined("API_KEY") && defined("API_TOKEN")){
                 $KEY = API_KEY; $VALUE = API_TOKEN;
@@ -123,4 +123,15 @@ class Curl{
                 return json_decode($server_output);
             }
        }
+       protected static function localUrl($url){ $url = $url;
+            if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+                $url = self::siteURL().$url;
+            } return $url;
+       }
+       protected static function siteURL() {
+          $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || 
+            $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+          $domainName = $_SERVER['HTTP_HOST'];
+          return $protocol.$domainName;
+    }
 }
