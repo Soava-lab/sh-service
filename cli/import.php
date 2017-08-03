@@ -99,5 +99,5 @@ class import{
 		  }
 		}
 		return $msg;
-	}
+	} 
 }
