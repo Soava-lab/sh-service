@@ -165,6 +165,12 @@ if(isset($argv[1]) && $argv[1]!=''){
 					case 'modules':
 						echo clean_color(show::module($typeName));
 					break;
+					case 'modules:live':
+						echo clean_color(show::live_module("modules"));
+					break;
+					case 'packages:live':
+						echo clean_color(show::live_package("packages"));
+					break;
 										
 					default:
 						echo BAD_FORMAT();
