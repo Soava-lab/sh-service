@@ -28,7 +28,7 @@ define("USERNAME","root");
 define("PASSWORD","root");
 define("DATABASE","3p-php");
 define("DATABASE_TYPE","mysqli");
-define("DB_STATUS",false); #
+define("DB_STATUS",true); #
 
 # ADDITIONAL OPTIONS
 define("DNS","");
