@@ -75,6 +75,11 @@ echo clean_color($colors->getColoredString("[ Curl Command ] curl", "brown", "")
 
 echo clean_color($colors->getColoredString("curl get:fullurl		", "green", "") . "	Get url results\n\n");
 
+# Remote Service Command
+echo clean_color($colors->getColoredString("[ Remote Service Command ] remote | -i", "brown", "") . "\n");
+
+echo clean_color($colors->getColoredString("remote domain.com		", "green", "") . "	Remote sh service\n\n");
+
 # Server PORT Command
 echo clean_color($colors->getColoredString("[ Server Command ] server | -s", "brown", "") . "\n");
 
