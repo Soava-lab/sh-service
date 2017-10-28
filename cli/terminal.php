@@ -1,5 +1,6 @@
 <?php
 require_once 'db.php';
+require_once 'is_exist.php';
 if(isset($argv[1]) && $argv[1]!=''){
 	if(strtolower($argv[1]) == 'create' || strtolower($argv[1]) == 'mk'){ require_once 'create.php';
 		if(isset($argv[2]) && $argv[2]!=''){
@@ -75,6 +76,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 			}
 			
 			if($status == 'sh'){ $url = $baseUrl = $url.'?cmd=';
+				echo "Remote sh service connected successfuly.\nFor help enter -h\n";
 				remote_sh_cmd($url);
 			}else{
 				echo "Sorry, could not find sh service.";
@@ -89,7 +91,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 				$type = strtolower($whatAt[0]);
 				$typeName = strtolower($whatAt[1]);
 				$rm_api = NULL;
-				if($type == 'api'){
+				if($type == 'api' && count($argv) == 5){
 					$rm_api  = (isset($argv[3]))?$argv[3]:NULL;
 					$prompt  = (isset($argv[4]))?$argv[4]:NULL;
 				}else{
@@ -115,7 +117,6 @@ if(isset($argv[1]) && $argv[1]!=''){
 						echo clean_color(remove::module($typeName,$prompt));
 					break;
 					case 'api':
-						#echo $typeName,$rm_api,$prompt;
 						echo clean_color(remove::api($typeName,$rm_api,$prompt));
 					break;
 										
@@ -307,7 +308,6 @@ if(isset($argv[1]) && $argv[1]!=''){
 		echo BAD_FORMAT();
 	}
 }else{
-		require_once 'is_exist.php';
 		# $sh : command
 		function sh_cmd(){
 			ob_start();
