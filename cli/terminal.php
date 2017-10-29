@@ -2,6 +2,7 @@
 require_once 'db.php';
 require_once 'is_exist.php';
 require_once 'curl.php';
+require_once 'get_synch.php';
 
 function remote_sh_cmd($url){ $baseUrl = $url;
 		ob_start();
@@ -19,6 +20,51 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 			echo "Sorry, Remote curl not allowed.";
 		}else if(isset($basecmd) && $basecmd == 'remote' || $basecmd == '-i'){ 
 			echo "Sorry, Remote service not allowed inner of remote.";
+		}else if(isset($basecmd) && $basecmd == 'push'){
+			$dest = $type = "";
+			$cmdC = explode("/", $cmd);
+			
+			if(count($cmdC) == 3){
+				$cmd = "/".$cmdC[1];
+				$dest = $cmdC[2];
+			}
+			
+			$argv_cmd = ltrim(strstr($cmd,"/"),"/");
+			$whatAt = explode(":", $argv_cmd);
+			if(count($whatAt) == 2){
+				$type = strtolower($whatAt[0]);
+				$typeName = strtolower($whatAt[1]);			
+			} 
+			$remoteUrl = explode("service.php",$url);
+			$remoteUrl = $remoteUrl[0]."cli/synch.php";
+			switch ($type) {
+				case 'controller':
+					echo clean_color(getSynch::controller($typeName,$dest,$remoteUrl));
+				break;
+				case 'model': 
+					echo clean_color(getSynch::model($typeName,$dest,$remoteUrl));
+				break;
+				case 'library':
+					echo clean_color(getSynch::library($typeName,$dest,$remoteUrl));
+				break;
+				case 'extender':
+					echo clean_color(getSynch::extender($typeName,$dest,$remoteUrl));
+				break;
+				case 'package':
+					echo clean_color(getSynch::package($typeName,$dest,$remoteUrl));
+				break;
+				case 'module':
+					echo clean_color(getSynch::module($typeName,$dest,$remoteUrl));
+				break;
+				case 'api':
+					echo clean_color(getSynch::api($typeName,$dest,$remoteUrl));
+				break;
+									
+				default:
+					echo BAD_FORMAT();
+				break;
+			}
+
 		}else{ $cmd_output = '';
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -373,6 +419,9 @@ if(isset($argv[1]) && $argv[1]!=''){
 					
 				 
 				 
+				
+				}else if(isset($baseCmd) && $baseCmd == 'push'){ 
+					echo "Push service remote sh 2.";
 				}else if($baseCmd == 'remote' || $baseCmd == '-i'){
 					$domain = strstr($cmd," ");				
 					$domain = rtrim($domain,"/");
