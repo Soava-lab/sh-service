@@ -130,7 +130,8 @@ if(isset($argv[1]) && $argv[1]!=''){
 				echo "Remote sh service connected successfuly.\nFor help enter -h\n";
 				remote_sh_cmd($url);
 			}else{
-				echo "Sorry, could not find sh service.";
+				echo "Sorry, could not find sh service.\n";
+				remote_sh_cmd($url);
 			}
 	 	}
 	 
@@ -436,7 +437,9 @@ if(isset($argv[1]) && $argv[1]!=''){
 						ob_get_flush();
 						remote_sh_cmd($url);
 					}else{
-						echo "Sorry, could not find sh service.";
+						echo "Sorry, could not find sh service.\n";
+						ob_get_flush();
+						sh_cmd();
 					}
 				}else{
 					echo shell_exec("php sh ".$cmd);
