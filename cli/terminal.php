@@ -444,7 +444,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 					sh_cmd();
 				}
 		  }else{
-			  echo BAD_FORMAT();
+			  echo shell_exec("php sh ".$cmd);
 			  ob_get_flush();
 			  sh_cmd();
 		  }
