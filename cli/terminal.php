@@ -12,6 +12,10 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 		flush();
 		ob_flush();
 		$cmd  =  strtolower(trim( fgets( STDIN ) ));
+		if(trim($cmd) == "") {
+			ob_get_flush();
+			remote_sh_cmd($baseUrl);
+		}
 		if($cmd == 'exit') exit(0);				
 		$cmd = str_replace(" ","/",$cmd);
 		$basecmd = strstr($cmd,"/",true);
@@ -369,6 +373,10 @@ if(isset($argv[1]) && $argv[1]!=''){
 			flush();
 			ob_flush();
 			$cmd  =  strtolower(trim( fgets( STDIN ) ));
+			if(trim($cmd) == "") {
+				ob_get_flush();
+				sh_cmd();
+			}
 			if($cmd == 'exit') exit(0);
 			$explode = explode(" ",$cmd);
 			if(count($explode) >=2){
