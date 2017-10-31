@@ -33,7 +33,7 @@ define("DB_STATUS",true); #
 # ADDITIONAL OPTIONS
 define("DNS","");
 define("DATABASE_PREFIX","");
-
+ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 #############################################
 	 # DO NOT REMOVE ANYTHONG HERE #
 #############################################
