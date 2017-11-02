@@ -6,7 +6,7 @@ class create{
 		$message = "<?php\n#Create your public methods here to access on route.\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777,true); umask($uold);
+		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -22,7 +22,7 @@ class create{
 		$message = "<?php\n#Create your public methods here to access.\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777,true); umask($uold);
+		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -38,7 +38,7 @@ class create{
 		$message = "<?php\n#Create your public methods here to access.\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777,true); umask($uold);
+		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -54,7 +54,7 @@ class create{
 		$message = "<?php\nif(!defined('SHA')) die('Access denied!');\n\n/*Http::get('/test',function(){\n echo 'Test page is running...';\n});*/\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777,true); umask($uold);
+		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -70,7 +70,7 @@ class create{
 		$message = "<?php\nnamespace package;\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777,true); umask($uold);
+		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");

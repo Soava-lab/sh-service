@@ -65,7 +65,7 @@ class import{
 		  }else{
 		  	$msg = "\033[0;31mPermission denied. coult't import ".$c_dir."  \033[0m \n";
 		  }
-		}
+		
 		return $msg;
 	}
 	public function module($fileName){ $msg=BAD_FORMAT(); $c_dir = 'modules'; $module = $c_dir.'/'.strtolower($fileName);
