@@ -255,6 +255,12 @@ if(isset($argv[1]) && $argv[1]!=''){
 					case 'extender':
 						echo (trim($type)!="" && $typeName)?clean_color($explain->extender($typeName)):BAD_FORMAT();
 					break;
+					case 'api':
+						echo (trim($type)!="" && $typeName)?clean_color($explain->init($typeName)):BAD_FORMAT();
+					break;
+					case 'init':
+						echo (trim($type)!="" && $typeName)?clean_color($explain->init($typeName)):BAD_FORMAT();
+					break;
 					case 'routes':
 						echo (trim($type)!="" && $typeName)?clean_color($explain->routes($typeName)):BAD_FORMAT();
 					break;		
@@ -292,6 +298,12 @@ if(isset($argv[1]) && $argv[1]!=''){
 					break;
 					case 'extenders':
 						echo clean_color(show::extender($typeName));
+					break;
+					case 'api':
+						echo clean_color(show::init($typeName));
+					break;
+					case 'init':
+						echo clean_color(show::init($typeName));
 					break;
 					case 'packages':
 						echo clean_color(show::package($typeName));
