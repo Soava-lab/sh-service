@@ -158,6 +158,40 @@ class show{
 		  }		
 		  return $msg;
 	}
+	public function git_module($module=NULL){ $msg=BAD_FORMAT(); $c_dir = 'modules'; $init_dir = $c_dir.'/*';
+		  //if(!is_dir($init_dir)) mkdir($init_dir,777);
+		  require_once 'cli-terminal.php';
+		  $colors = new Colors();
+		  $msg = "\n";
+		  if($module!=NULL){
+			    echo "Please wait loading ... \n";
+			  	$url = "https://api.github.com/repos/Soava-lab/warehouse/contents/modules?ref=master&access_token=".GIT_TOKEN;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				  'Accept: application/vnd.github.v3+json',
+				  'user-agent: warehouse'
+				  ));
+				$server_output = curl_exec($ch);
+				curl_close ($ch);		
+				if($server_output!=""){		
+				$json = json_decode($server_output);
+				echo "\n================= ".clean_color($colors->getColoredString("".strtoupper("AVAILABLE MODULES")."", "yellow", "") )." =================\n";	
+					if(count($json) > 0){
+						foreach ($json as $key => $value){
+						   echo "\n".'module:'.strtolower(pathinfo($value->name, PATHINFO_FILENAME))."\n";
+						}
+					}
+				}else{
+					$msg = "\033[0;31mSorry could not read the ".$module.". please try again.  \033[0m \n";
+				}
+
+		  }else{
+		  	$msg = "\033[0;31mModule ".$module." does not exist in ".$c_dir."  \033[0m \n";
+		  }		
+		  return $msg;
+	}
 	public function live_package($module=NULL){ $msg=BAD_FORMAT(); $c_dir = 'packages'; $init_dir = $c_dir.'/*';
 		  //if(!is_dir($init_dir)) mkdir($init_dir,777);
 		  require_once 'cli-terminal.php';
@@ -179,6 +213,41 @@ class show{
 							echo "\n".strtolower(basename($file))."\n";
 						}
 					}
+				}else{
+					$msg = "\033[0;31mSorry could not read the ".$module.". please try again.  \033[0m \n";
+				}
+
+		  }else{
+		  	$msg = "\033[0;31mModule ".$module." does not exist in ".$c_dir."  \033[0m \n";
+		  }		
+		  return $msg;
+	}
+	public function git_package($module=NULL){ $msg=BAD_FORMAT(); $c_dir = 'packages'; $init_dir = $c_dir.'/*';
+		  //if(!is_dir($init_dir)) mkdir($init_dir,777);
+		  require_once 'cli-terminal.php';
+		  $colors = new Colors();
+		  $msg = "\n";
+		  if($module!=NULL){
+			  	echo "Please wait loading ... \n";
+			  	$url = "https://api.github.com/repos/Soava-lab/warehouse/contents/package?ref=master&access_token=".GIT_TOKEN;
+				$ch = curl_init(); # Accept: application/vnd.github.v3+json
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				  'Accept: application/vnd.github.v3+json',
+				  'user-agent: warehouse'
+				  ));
+				$server_output = curl_exec($ch);
+				if($server_output!=""){		
+				$json = json_decode($server_output);
+				echo "\n================= ".clean_color($colors->getColoredString("".strtoupper("AVAILABLE PACKAGES")."", "yellow", "") )." =================\n";	
+				
+				if(count($json) > 0){
+					foreach ($json as $key => $value) {
+					   echo "\n".'package:'.strtolower(pathinfo($value->name, PATHINFO_FILENAME))."\n";
+					}
+				}
+
 				}else{
 					$msg = "\033[0;31mSorry could not read the ".$module.". please try again.  \033[0m \n";
 				}
