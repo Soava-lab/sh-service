@@ -5,7 +5,7 @@ require_once 'db.php';
 require_once 'is_exist.php';
 require_once 'curl.php';
 require_once 'get_synch.php';
-define("GIT_TOKEN", "6f68a2c852f0bece986f88c475993f79929db7d6");
+define("GIT_TOKEN", "ebb6a6eaf37ea42851372278954f24ad1b742398");
 function remote_sh_cmd($url){ $baseUrl = $url;
 		ob_start();
 		$parse = parse_url($baseUrl); 
