@@ -5,7 +5,7 @@ require_once 'db.php';
 require_once 'is_exist.php';
 require_once 'curl.php';
 require_once 'get_synch.php';
-
+define("GIT_TOKEN", "6f68a2c852f0bece986f88c475993f79929db7d6");
 function remote_sh_cmd($url){ $baseUrl = $url;
 		ob_start();
 		$parse = parse_url($baseUrl); 
@@ -198,10 +198,10 @@ if(isset($argv[1]) && $argv[1]!=''){
 				$typeName = strtolower($whatAt[1]);
 				switch ($type) {
 					case 'package':
-						echo (trim($type)!="" && $typeName)?clean_color($import->package($typeName)):BAD_FORMAT();
+						echo (trim($type)!="" && $typeName)?clean_color($import->git_package($typeName)):BAD_FORMAT();
 					break;
 					case 'module':
-						echo (trim($type)!="" && $typeName)?clean_color($import->module($typeName)):BAD_FORMAT();
+						echo (trim($type)!="" && $typeName)?clean_color($import->git_module($typeName)):BAD_FORMAT();
 					break;				
 					default:
 						echo BAD_FORMAT();
@@ -264,12 +264,12 @@ if(isset($argv[1]) && $argv[1]!=''){
 					case 'routes':
 						echo (trim($type)!="" && $typeName)?clean_color($explain->routes($typeName)):BAD_FORMAT();
 					break;		
-					case 'modules:live':
+					/*case 'modules:live':
 						echo clean_color(show::live_module("modules"));
 					break;
 					case 'packages:live':
 						echo clean_color(show::live_package("packages"));
-					break;
+					break;*/
 					default:
 						echo BAD_FORMAT();
 					break;
@@ -312,10 +312,16 @@ if(isset($argv[1]) && $argv[1]!=''){
 						echo clean_color(show::module($typeName));
 					break;
 					case 'modules:live':
-						echo clean_color(show::live_module("modules"));
+						echo clean_color(show::git_module("modules"));
 					break;
 					case 'packages:live':
-						echo clean_color(show::live_package("packages"));
+						echo clean_color(show::git_package("packages"));
+					break;
+					case 'modules:git':
+						echo clean_color(show::git_module("modules"));
+					break;
+					case 'packages:git':
+						echo clean_color(show::git_package("packages"));
 					break;
 										
 					default:
