@@ -135,7 +135,7 @@ class show{
 		  $msg = "\n";
 		  if($module!=NULL){
 			    echo "Please wait loading ... \n";
-			  	$url = "http://phpbala.in/import.php?".$c_dir;
+			  	$url = "http://54.242.206.130/appappo/import.php?".$c_dir;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -199,7 +199,7 @@ class show{
 		  $msg = "\n";
 		  if($module!=NULL){
 			  	echo "Please wait loading ... \n";
-			  	$url = "http://phpbala.in/import.php?".$c_dir;
+			  	$url = "http://54.242.206.130/appappo/import.php?".$c_dir;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
