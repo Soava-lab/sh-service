@@ -124,22 +124,42 @@ if(isset($argv[1]) && $argv[1]!=''){
 	}elseif(strtolower($argv[1]) == 'remote' || strtolower($argv[1]) == '-i'){ 
 
 		if(isset($argv[2]) && $argv[2]!=''){
+			$token = isset($argv[3])?$argv[3]:"";
+			$tokenObj = json_encode(array("token"=>$token));
 			$domain = rtrim($argv[2],"/");
 			$url = $domain."/service.php";
 			$ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$tokenObj);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $status = curl_exec($ch);
             curl_close ($ch);
-			
-			if($status == 'sh'){ $url = $baseUrl = $url.'?cmd=';
-				echo "Remote sh service connected successfuly.\nFor help enter -h\n";
-				remote_sh_cmd($url);
+			if($status != ""){
+				$auth = json_decode($status);
+				if(isset($auth,$auth->auth_key,$auth->auth_token)){ 
+					if($auth->auth_key!="" && $auth->auth_token!=""){
+						$key = $auth->auth_key; $token = $auth->auth_token;
+						$url = $baseUrl = $url.'?key='.$key.'&token='.$token.'&cmd=';
+						echo "Remote sh service connected successfuly.\nFor help enter -h\n";
+						remote_sh_cmd($url);
+					}else{
+						echo "Sorry, your token is invalid. please check it\n";
+					}
+				}else{
+					if($status == 'sh'){
+						echo "Please enter the sh service token.\n";
+					}else{
+						echo "Sorry, could not find sh service.\n";
+					}
+				}
 			}else{
-				echo "Sorry, could not find sh service.\n";
-				remote_sh_cmd($url);
+					echo "Sorry, could not find sh service.\n";
 			}
-	 	}
+	 	}else{
+			echo BAD_FORMAT();
+		}
+	 
 	 
 	}elseif(strtolower($argv[1]) == 'remove' || strtolower($argv[1]) == 'rm'){ require_once 'remove.php';
 
@@ -468,28 +488,48 @@ if(isset($argv[1]) && $argv[1]!=''){
 				}else if(isset($baseCmd) && $baseCmd == 'push'){ 
 					echo "Push service remote sh 2.";
 				}else if($baseCmd == 'remote' || $baseCmd == '-i'){
-					$domain = strstr($cmd," ");				
-					$domain = rtrim($domain,"/");
+					$domain = strtolower($explode[1]);			
+					$domain = rtrim($domain,"/");					
+					$token = isset($explode[2])? $explode[2] : '';
+					$tokenObj = json_encode(array("token"=>$token));
 					$url = trim($domain."/service.php");
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_URL,$url);
+					curl_setopt($ch, CURLOPT_POST, 1);
+		            curl_setopt($ch, CURLOPT_POSTFIELDS,$tokenObj);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					$status = curl_exec($ch);
 					curl_close ($ch);
-					if($status == 'sh'){ $url = $baseUrl = $url.'?cmd=';
-						echo "Remote sh service connected successfuly.\nFor help enter -h\n";
-						ob_get_flush();
-						remote_sh_cmd($url);
+					if($status != ""){
+						$auth = json_decode($status);				
+						if(isset($auth,$auth->auth_key,$auth->auth_token)){ 
+							if($auth->auth_key!="" && $auth->auth_token!=""){
+								$key = $auth->auth_key; $token = $auth->auth_token;
+								$url = $baseUrl = $url.'?key='.$key.'&token='.$token.'&cmd=';
+								echo "Remote sh service connected successfuly.\nFor help enter -h\n";
+								ob_get_flush();
+								remote_sh_cmd($url);
+							}else{
+								echo "Sorry, your token is invalid. please check it\n";
+								ob_get_flush();
+								sh_cmd();
+							}
+						}else{
+							if($status == 'sh'){
+								echo "Please enter the sh service token.\n";
+								ob_get_flush();
+								sh_cmd();
+							}else{
+								echo "Sorry, could not find sh service.\n";
+								ob_get_flush();
+								sh_cmd();
+							}
+						}
 					}else{
 						echo "Sorry, could not find sh service.\n";
 						ob_get_flush();
 						sh_cmd();
 					}
-				}else{
-					echo shell_exec("php sh ".$cmd);
-					ob_get_flush();
-					sh_cmd();
-				}
 		  }else{
 			  echo shell_exec("php sh ".$cmd);
 			  ob_get_flush();
