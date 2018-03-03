@@ -1,11 +1,10 @@
 <?php
-error_reporting(0);
-ini_set("display_errors",0);
 require_once 'db.php';
 require_once 'is_exist.php';
 require_once 'curl.php';
 require_once 'get_synch.php';
 define("GIT_TOKEN", "ebb6a6eaf37ea42851372278954f24ad1b742398");
+
 function remote_sh_cmd($url){ $baseUrl = $url;
 		ob_start();
 		$parse = parse_url($baseUrl); 
@@ -160,7 +159,6 @@ if(isset($argv[1]) && $argv[1]!=''){
 			echo BAD_FORMAT();
 		}
 	 
-	 
 	}elseif(strtolower($argv[1]) == 'remove' || strtolower($argv[1]) == 'rm'){ require_once 'remove.php';
 
 		if(isset($argv[2]) && $argv[2]!=''){
@@ -218,10 +216,10 @@ if(isset($argv[1]) && $argv[1]!=''){
 				$typeName = strtolower($whatAt[1]);
 				switch ($type) {
 					case 'package':
-						echo (trim($type)!="" && $typeName)?clean_color($import->git_package($typeName)):BAD_FORMAT();
+						echo (trim($type)!="" && $typeName)?clean_color($import->package($typeName)):BAD_FORMAT();
 					break;
 					case 'module':
-						echo (trim($type)!="" && $typeName)?clean_color($import->git_module($typeName)):BAD_FORMAT();
+						echo (trim($type)!="" && $typeName)?clean_color($import->module($typeName)):BAD_FORMAT();
 					break;				
 					default:
 						echo BAD_FORMAT();
@@ -275,21 +273,15 @@ if(isset($argv[1]) && $argv[1]!=''){
 					case 'extender':
 						echo (trim($type)!="" && $typeName)?clean_color($explain->extender($typeName)):BAD_FORMAT();
 					break;
-					case 'api':
-						echo (trim($type)!="" && $typeName)?clean_color($explain->init($typeName)):BAD_FORMAT();
-					break;
-					case 'init':
-						echo (trim($type)!="" && $typeName)?clean_color($explain->init($typeName)):BAD_FORMAT();
-					break;
 					case 'routes':
 						echo (trim($type)!="" && $typeName)?clean_color($explain->routes($typeName)):BAD_FORMAT();
 					break;		
-					/*case 'modules:live':
+					case 'modules:live':
 						echo clean_color(show::live_module("modules"));
 					break;
 					case 'packages:live':
 						echo clean_color(show::live_package("packages"));
-					break;*/
+					break;
 					default:
 						echo BAD_FORMAT();
 					break;
@@ -319,12 +311,6 @@ if(isset($argv[1]) && $argv[1]!=''){
 					case 'extenders':
 						echo clean_color(show::extender($typeName));
 					break;
-					case 'api':
-						echo clean_color(show::init($typeName));
-					break;
-					case 'init':
-						echo clean_color(show::init($typeName));
-					break;
 					case 'packages':
 						echo clean_color(show::package($typeName));
 					break;
@@ -332,10 +318,10 @@ if(isset($argv[1]) && $argv[1]!=''){
 						echo clean_color(show::module($typeName));
 					break;
 					case 'modules:live':
-						echo clean_color(show::git_module("modules"));
+						echo clean_color(show::live_module("modules"));
 					break;
 					case 'packages:live':
-						echo clean_color(show::git_package("packages"));
+						echo clean_color(show::live_package("packages"));
 					break;
 					case 'modules:git':
 						echo clean_color(show::git_module("modules"));
@@ -407,7 +393,6 @@ if(isset($argv[1]) && $argv[1]!=''){
 		}else{
 			echo BAD_FORMAT();
 		}
-
 	}elseif(strtolower($argv[1]) == 'cmd'){
 		if(isset($argv[2]) && $argv[2]!=''){		
 				$cmd = $argv[2];
@@ -415,7 +400,6 @@ if(isset($argv[1]) && $argv[1]!=''){
 		}else{
 			echo BAD_FORMAT();
 		}
-
 	}else{
 		echo BAD_FORMAT();
 	}
@@ -428,12 +412,12 @@ if(isset($argv[1]) && $argv[1]!=''){
 			print $message;
 			flush();
 			ob_flush();
-			$cmd  =  strtolower(trim( fgets( STDIN ) ));
+			$cmd  =  trim( fgets( STDIN ) );
 			if(trim($cmd) == "") {
 				ob_get_flush();
 				sh_cmd();
 			}
-			if($cmd == 'exit') exit(0);
+			if(strtolower($cmd) == 'exit') exit(0);
 			$explode = explode(" ",$cmd);
 			if(count($explode) >=2){
 				$baseCmd = strtolower($explode[0]);
@@ -480,10 +464,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 						echo shell_exec("php sh ".$cmd." y");
 						ob_get_flush();
 						sh_cmd();
-					}
-					
-				 
-				 
+					}				 
 				
 				}else if(isset($baseCmd) && $baseCmd == 'push'){ 
 					echo "Push service remote sh 2.";
@@ -530,6 +511,11 @@ if(isset($argv[1]) && $argv[1]!=''){
 						ob_get_flush();
 						sh_cmd();
 					}
+				}else{
+					echo shell_exec("php sh ".$cmd);
+					ob_get_flush();
+					sh_cmd();
+				}
 		  }else{
 			  echo shell_exec("php sh ".$cmd);
 			  ob_get_flush();
