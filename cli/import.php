@@ -3,7 +3,7 @@
 class import{
 	var $server_uri; 
 	public function __construct(){
-		$this->server_uri = 'http://phpbala.in/';
+		$this->server_uri = 'http://54.242.206.130/appappo/';
 		$this->git_uri    = 'https://raw.githubusercontent.com/Soava-lab/warehouse/master/';
 	}
 	protected function getHeaders($url)
