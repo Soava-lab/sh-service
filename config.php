@@ -4,6 +4,7 @@
 #############################################
 define("SH_KEY","API");
 define("SH_VALUE","SH");
+define("REMOTE_TOKEN","Tok");
 $SH_AUTH = [
 			"HEAD"=>[
 						"API"=>"SH",
