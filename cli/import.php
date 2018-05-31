@@ -102,7 +102,7 @@ class import{
 		} else {  if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	# Download from server & extract
-			$url = $this->server_uri.$c_dir."/".ucfirst($fileName).".pkg";
+			$url = $this->git_uri.$c_dir."/".ucfirst($fileName).".pkg";
 			$headers = self::getHeaders($url);
 			$path	 = $c_dir."/".ucfirst($fileName).".php";
 			if ($headers['http_code'] === 200 and $headers['download_content_length'] < 1024*1024) {
