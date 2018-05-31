@@ -196,10 +196,15 @@ class show{
 				curl_close ($ch);		
 				if($server_output!=""){		
 				$json = json_decode($server_output);
-				echo "\n================= ".clean_color($colors->getColoredString("".strtoupper("AVAILABLE MODULES")."", "yellow", "") )." =================\n";	
-					if(count($json) > 0){
-						foreach ($json as $key => $value){
-						   echo "\n".'module:'.strtolower(pathinfo($value->name, PATHINFO_FILENAME))."\n";
+				$title = "\n================= ".clean_color($colors->getColoredString("".strtoupper("AVAILABLE MODULES")."", "yellow", "") )." =================\n";	
+					if(isset($json) && count($json) > 0){
+						if(isset($json->message)){
+							$msg = "\033[0;31mSorry warehouse token is invalid.  \033[0m \n";
+						}else{
+							echo $title;
+							foreach ($json as $key => $value){
+							   echo "\n".'module:'.strtolower(pathinfo($value->name, PATHINFO_FILENAME))."\n";
+							}
 						}
 					}
 				}else{
@@ -259,11 +264,16 @@ class show{
 				$server_output = curl_exec($ch);
 				if($server_output!=""){		
 				$json = json_decode($server_output);
-				echo "\n================= ".clean_color($colors->getColoredString("".strtoupper("AVAILABLE PACKAGES")."", "yellow", "") )." =================\n";	
+				$title =  "\n================= ".clean_color($colors->getColoredString("".strtoupper("AVAILABLE PACKAGES")."", "yellow", "") )." =================\n";	
 				
-				if(count($json) > 0){
-					foreach ($json as $key => $value) {
-					   echo "\n".'package:'.strtolower(pathinfo($value->name, PATHINFO_FILENAME))."\n";
+				if(isset($json) && count($json) > 0){
+					if(isset($json->message)){
+							$msg = "\033[0;31mSorry warehouse token is invalid.  \033[0m \n";
+						}else{
+							echo $title;
+							foreach ($json as $key => $value) {
+							   echo "\n".'package:'.ucfirst( strtolower(pathinfo($value->name, PATHINFO_FILENAME)) )."\n";
+							}
 					}
 				}
 
