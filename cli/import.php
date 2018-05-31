@@ -3,7 +3,7 @@
 class import{
 	var $server_uri; 
 	public function __construct(){
-		$this->server_uri = 'http://54.242.206.130/appappo/';
+		$this->server_uri = 'http://ctmise.com/';
 		$this->git_uri    = 'https://raw.githubusercontent.com/Soava-lab/warehouse/master/';
 	}
 	protected function getHeaders($url)
@@ -48,7 +48,7 @@ class import{
 		$message = "<?php\nnamespace package;\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else {  $uold = umask(0); mkdir($c_dir,0777); umask($uold); 
+		} else {  if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	# Download from server & extract
 			$url = $this->server_uri.$c_dir."/".ucfirst($fileName).".pkg";
@@ -73,7 +73,7 @@ class import{
 		$message = "<?php\nnamespace package;\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else {  $uold = umask(0); mkdir($c_dir,0777); umask($uold); 
+		} else {  if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	# Download from server & extract
 			$url = $this->server_uri.$c_dir."/".ucfirst($fileName).".pkg";
