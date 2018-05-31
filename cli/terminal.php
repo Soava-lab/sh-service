@@ -239,6 +239,31 @@ if(isset($argv[1]) && $argv[1]!=''){
 			echo BAD_FORMAT();
 		}
 
+	}elseif(strtolower($argv[1]) == 'git'){ require_once 'import.php';
+		$import = new import();
+		if(isset($argv[2]) && $argv[2]!=''){
+			$whatAt = explode(":", $argv[2]);
+			if(count($whatAt) == 2){
+				$type = strtolower($whatAt[0]);
+				$typeName = strtolower($whatAt[1]);
+				switch ($type) {
+					case 'package':
+						echo (trim($type)!="" && $typeName)?clean_color($import->git_package($typeName)):BAD_FORMAT();
+					break;
+					case 'module':
+						echo (trim($type)!="" && $typeName)?clean_color($import->git_module($typeName)):BAD_FORMAT();
+					break;				
+					default:
+						echo BAD_FORMAT();
+					break;
+				}
+			}else{
+				echo BAD_FORMAT();	
+			}
+		}else{
+			echo BAD_FORMAT();
+		}
+
 	}elseif(strtolower($argv[1]) == 'compile' || strtolower($argv[1]) == 'exe'){ require_once 'compile.php';
 		$compile = new compile();
 		if(isset($argv[2]) && $argv[2]!=''){						
