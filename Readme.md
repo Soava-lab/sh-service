@@ -7,4 +7,4 @@
 
 <a href="http://phpbala.in" target="_blank"><img src="http://phpbala.in/wp-content/uploads/2017/02/cropped-soava-logo-1.png"></a>
 
-<a href="http://phpbala.in/sh/docs" target="_blank">Developer guide</a>
+<a href="https://www.ctmise.com/sh/docs/" target="_blank">Developer guide</a>
