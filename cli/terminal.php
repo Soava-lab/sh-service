@@ -29,9 +29,9 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 		$basecmd = strstr($cmd,"/",true);
 		$url = $url.$cmd;
 		if(isset($basecmd) && $basecmd == 'curl'){
-			echo "Sorry, Remote curl not allowed.";
+			echo "Sorry, Remote curl not allowed.\n";
 		}else if(isset($basecmd) && $basecmd == 'remote' || $basecmd == '-i'){ 
-			echo "Sorry, Remote service not allowed inner of remote.";
+			echo "Sorry, Remote service not allowed inner of remote.\n";
 		}else if(isset($basecmd) && $basecmd == 'push'){
 			$dest = $type = "";
 			$cmdC = explode("/", $cmd);
@@ -315,6 +315,9 @@ if(isset($argv[1]) && $argv[1]!=''){
 					case 'libraries':
 						echo clean_color(show::library($typeName));
 					break;
+					case 'api':
+						echo clean_color(show::api($typeName));
+					break;
 					case 'extenders':
 						echo clean_color(show::extender($typeName));
 					break;
@@ -481,7 +484,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 					}				 
 				
 				}else if(isset($baseCmd) && $baseCmd == 'push'){ 
-					echo "Push service remote sh 2.";
+					echo "Push service only for remote sh \n";
 				}else if($baseCmd == 'remote' || $baseCmd == '-i'){
 					$domain = strtolower($explode[1]);			
 					$domain = rtrim($domain,"/");					
