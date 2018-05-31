@@ -48,7 +48,7 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 
 				$this->db = self::db(); #DBC($db['default']);
 			}else{
-				$this->db = self::db();
+				$this->db = new Error(); # Db Status false
 			}
 		}catch(Exception $e){
 			if($e){
@@ -222,7 +222,7 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 		}
 		return $returnUrl;
 	}
-	private static function setHeader($status,$body=""){
+	public static function setHeader($status,$body=""){
 		if($status!=""){
 			header("Access-Control-Allow-Origin: *");
 			header("HTTP/1.1 ".$status."");
@@ -696,11 +696,12 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 function http(){
 	return new Http();
 }
-function db(){
+function db(){ 
 	if(DB_STATUS == true){
-		$dbc = new Http();
-		return $dbc->db;
-	}else{ die($dbc->setHeader(500,"Enable DB_STATUS in config.php")); }
+		#$dbc = new Http();
+		#return $dbc->db;
+		return Http::db();
+	}else{ die(http()->setHeader(500,"Enable DB_STATUS in config.php")); }
 }
 function getError($number, $msg, $file, $line, $vars){
 	   $error = debug_backtrace(); #var_dump($error);
