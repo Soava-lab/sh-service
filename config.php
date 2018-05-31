@@ -17,6 +17,8 @@ $SH_AUTH = [
 
 $_GLOBALS['SH_AUTH'] = $SH_AUTH;
 
+define("BASE_URL", "http://localhost/sh-service/");
+
 /* CONTROLLER */
 #=================================#
 define("CONTROLLER_PATH","controller/");
@@ -27,11 +29,11 @@ define("LANG_PATH","language/");
 define("EXT_PATH","extender/");
 define("CMS_PATH","cms/");
 
-#=================================#
+#===============DONT EDIR==================#
 define("APPPATH",""); 				 # __DIR__     
 define("ENVIRONMENT","");			 # DEVELOPMENT
-define("BASEPATH","");				 # APPPATH."/" 
-#=================================#
+define("BASEPATH","");				 # APPPATH."/" Ex: dbc/
+#================DONT EDIT=================#
 
 /* DATABASE */
 define("HOST","localhost");
