@@ -110,6 +110,25 @@ class show{
 		  return $msg;
 	}
 
+	public function api($api=NULL){ $msg=BAD_FORMAT(); $c_dir = 'extender/init'; $init_dir = $c_dir.'/*';
+		  //if(!is_dir($init_dir)) mkdir($init_dir,777);
+		  require_once 'cli-terminal.php';
+		  $colors = new Colors();
+		  $msg = "\n";
+		  if($api!=NULL){
+				echo "\n================= ".clean_color($colors->getColoredString("[ ".strtoupper("ALL ".$api."")." ]", "yellow", "") )." =================\n";
+				if(is_dir($c_dir)){					
+					foreach (glob($init_dir) as $file){
+						echo "\n".basename($file)."\n";
+					}
+				}
+
+		  }else{
+		  	$msg = "\033[0;31mExtender ".$api." does not exist in ".$c_dir."  \033[0m \n";
+		  }		
+		  return $msg;
+	}
+
 	public function module($module=NULL){ $msg=BAD_FORMAT(); $c_dir = 'modules'; $init_dir = $c_dir.'/*';
 		  //if(!is_dir($init_dir)) mkdir($init_dir,777);
 		  require_once 'cli-terminal.php';
@@ -135,7 +154,7 @@ class show{
 		  $msg = "\n";
 		  if($module!=NULL){
 			    echo "Please wait loading ... \n";
-			  	$url = "http://54.242.206.130/appappo/import.php?".$c_dir;
+			  	$url = "https://www.ctmise.com/import.php?".$c_dir;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -144,7 +163,7 @@ class show{
 				if($server_output!=""){		
 				$json = json_decode($server_output);
 				echo "\n================= ".clean_color($colors->getColoredString("".strtoupper("".$json->body->title."")."", "yellow", "") )." =================\n";	
-					if(count($json->body->name) > 0){	
+					if(isset($json->body->name) && count($json->body->name) > 0){	
 						foreach ($json->body->name as $file){
 							echo "\n".strtolower(basename($file))."\n";
 						}
@@ -199,7 +218,7 @@ class show{
 		  $msg = "\n";
 		  if($module!=NULL){
 			  	echo "Please wait loading ... \n";
-			  	$url = "http://54.242.206.130/appappo/import.php?".$c_dir;
+			  	$url = "https://www.ctmise.com/import.php?".$c_dir;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -208,7 +227,7 @@ class show{
 				if($server_output!=""){		
 				$json = json_decode($server_output);
 				echo "\n================= ".clean_color($colors->getColoredString("".strtoupper("".$json->body->title."")."", "yellow", "") )." =================\n";	
-					if(count($json->body->name) > 0){	
+					if(isset($json->body->name) && count($json->body->name) > 0){	
 						foreach ($json->body->name as $file){
 							echo "\n".strtolower(basename($file))."\n";
 						}
