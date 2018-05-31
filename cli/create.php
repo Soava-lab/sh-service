@@ -6,7 +6,7 @@ class create{
 		$message = "<?php\n#Create your public methods here to access on route.\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
+		} else { if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -22,7 +22,7 @@ class create{
 		$message = "<?php\n#Create your public methods here to access.\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
+		} else { if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -38,7 +38,7 @@ class create{
 		$message = "<?php\n#Create your public methods here to access.\nclass ".ucfirst($fileName)."{\n\n}\n?>";
 		if (file_exists($file)){
 		  	$msg = "\033[0;31m".ucfirst($fileName)." ".$c_dir." already exist.\033[0m \n";
-		} else { $uold = umask(0); chmod($c_dir,0777); umask($uold);
+		} else { if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	$fh = fopen($file, 'w');
 		    fwrite($fh, $message."\n");
@@ -94,12 +94,12 @@ Http::get('/api/".$table."/init',function(".$dollar."app){
 	".$dollar."app->db->query(\"CREATE TABLE IF NOT EXISTS `".$table."`(
 		 `".$id."` bigint(20) NOT NULL AUTO_INCREMENT,
 		 `title` varchar(100) DEFAULT NULL,
-		 `message` varchar(400) DEFAULT NULL,
+		 `content` varchar(400) DEFAULT NULL,
 		 `status` tinyint(4) DEFAULT NULL COMMENT '{0=>inactive,1=>active}',
 		 `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		 PRIMARY KEY (`".$id."`),
 		 KEY `title` (`title`),
-		 KEY `message` (`message`)
+		 KEY `content` (`content`)
 		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1\");
 	
 	".$dollar."rmsg = '".ucfirst($table)." CRUD has been inited successfuly.';
@@ -163,12 +163,12 @@ Http::get('/api/".$table."/(int):id',function(".$dollar."app,".$dollar."req){
 			    $query = db()->query("CREATE TABLE IF NOT EXISTS `".strtolower($table)."`(
 				 `".$id."` bigint(20) NOT NULL AUTO_INCREMENT,
 				 `title` varchar(100) DEFAULT NULL,
-				 `message` varchar(400) DEFAULT NULL,
+				 `content` varchar(400) DEFAULT NULL,
 				 `status` tinyint(4) DEFAULT NULL COMMENT '{0=>inactive,1=>active}',
 				 `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				 PRIMARY KEY (`".strtolower($id)."`),
 				 KEY `title` (`title`),
-				 KEY `message` (`message`)
+				 KEY `content` (`content`)
 				) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1");
 
 			  	$fh = fopen($file, 'w');
