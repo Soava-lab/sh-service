@@ -8,7 +8,7 @@ class getSynch{
 			if(is_dir($c_dir) && is_writable($c_dir) && is_readable($file)){  
 		  		$fileContent = base64_encode(file_get_contents($file));
 				$dest		 = ($dest!=NULL)?$dest:$fileName;
-				$data    = json_encode(array("type"=>"model","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
+				$data    = json_encode(array("type"=>"controller","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -52,7 +52,7 @@ class getSynch{
 			if(is_dir($c_dir) && is_writable($c_dir) && is_readable($file)){ 
 		  		$fileContent = base64_encode(file_get_contents($file));
 				$dest		 = ($dest!=NULL)?$dest:$fileName;
-				$data    = json_encode(array("type"=>"model","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
+				$data    = json_encode(array("type"=>"library","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -74,7 +74,7 @@ class getSynch{
 			if(is_dir($c_dir) && is_writable($c_dir) && is_readable($file)){ 
 		  		$fileContent = base64_encode(file_get_contents($file));
 				$dest		 = ($dest!=NULL)?$dest:$fileName;
-				$data    = json_encode(array("type"=>"model","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
+				$data    = json_encode(array("type"=>"extender","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -96,7 +96,7 @@ class getSynch{
 			if(is_dir($c_dir) && is_writable($c_dir) && is_readable($file)){ 
 		  		$fileContent = base64_encode(file_get_contents($file));
 				$dest		 = ($dest!=NULL)?$dest:$fileName;
-				$data    = json_encode(array("type"=>"model","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
+				$data    = json_encode(array("type"=>"package","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -131,7 +131,7 @@ class getSynch{
 			if(is_dir($c_dir) && is_writable($c_dir) && is_readable($file)){ 
 		  		$fileContent = base64_encode(file_get_contents($file));
 				$dest		 = ($dest!=NULL)?$dest:$fileName;
-				$data    = json_encode(array("type"=>"model","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
+				$data    = json_encode(array("type"=>"api","filename"=>strtolower($fileName),"dest"=>strtolower($dest),"content"=>$fileContent));
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
