@@ -3,7 +3,7 @@
 class import{
 	var $server_uri; 
 	public function __construct(){
-		$this->server_uri = 'http://ctmise.com/';
+		$this->server_uri = 'https://www.ctmise.com/';
 		$this->git_uri    = 'https://raw.githubusercontent.com/Soava-lab/warehouse/master/';
 	}
 	protected function getHeaders($url)
@@ -51,18 +51,44 @@ class import{
 		} else {  if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777,true); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	# Download from server & extract
-			$url = $this->server_uri.$c_dir."/".ucfirst($fileName).".pkg";
-			$headers = self::getHeaders($url);
-			$path	 = $c_dir."/".ucfirst($fileName).".php";
-			if ($headers['http_code'] === 200 and $headers['download_content_length'] < 1024*1024) {
-			  if (self::download($url, $path)){
-			 	$msg = "\033[0;32m".ucfirst($c_dir).' '.ucfirst($fileName).' has been imported'."\033[0m \nGo to ".$file." create your methods and access easily.\n";   
-			  }else{
-			  	$msg = "\033[0;31mSorry,coult't import ".$c_dir."  \033[0m \n";
-			  }
+
+		  	$url = $this->server_uri."import.php?".$c_dir.'s';
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			curl_close ($ch);		
+			if($server_output!=""){		
+			$json = json_decode($server_output);
+				if(isset($json->body->name) && count($json->body->name) > 0){
+
+					if(in_array($c_dir.':'.ucfirst($fileName), $json->body->name)){
+
+						$url = $this->server_uri.$c_dir."/".ucfirst($fileName).".pkg";
+						$headers = self::getHeaders($url);
+						$path	 = $c_dir."/".ucfirst($fileName).".php";
+						if ($headers['http_code'] === 200 and $headers['download_content_length'] < 1024*1024) {
+						  if (self::download($url, $path)){
+						 	$msg = "\033[0;32m".ucfirst($c_dir).' '.ucfirst($fileName).' has been imported'."\033[0m \nGo to ".$file." create your methods and access easily.\n";   
+						  }else{
+						  	$msg = "\033[0;31mSorry,coult't import ".$c_dir."  \033[0m \n";
+						  }
+						}else{
+							$msg = "\033[0;31mSorry, Package `".ucfirst($fileName)."` is not available. \033[0m \n";
+						}
+
+					}else{
+						$msg = "\033[0;31mSorry, Package `".ucfirst($fileName)."` is not available. \033[0m \n";
+					}
+					
+				}else{
+					$msg = "\033[0;31mSorry, Package `".ucfirst($fileName)."` is not available. \033[0m \n";
+				}
 			}else{
 				$msg = "\033[0;31mSorry, Package `".ucfirst($fileName)."` is not available. \033[0m \n";
 			}
+
+			
 		  }else{
 		  	$msg = "\033[0;31mPermission denied. coult't import ".$c_dir."  \033[0m \n";
 		  }
@@ -101,25 +127,50 @@ class import{
 		  if(!is_dir($c_dir)){ $uold = umask(0); mkdir($c_dir,0777); umask($uold); }
 		  if(is_dir($c_dir) && is_writable($c_dir)){
 		  	# Download from server & extract
-			$url = $this->server_uri.$c_dir."/".strtolower($fileName).".zip";
-			$headers = self::getHeaders($url);
-			$path	 = $c_dir."/".strtolower($fileName).".zip";
-			if ($headers['http_code'] === 200 and $headers['download_content_length'] < 1024*1024) {
-			  if (self::download($url, $path)){
-			  	require_once('unzip/pclzip.lib.php');
-				$zipfile = new PclZip($path);
-				if ($zipfile -> extract(PCLZIP_OPT_PATH, $c_dir.'/') == 0){
-					$msg = "\033[0;31mSorry,coult't import ".$c_dir."  \033[0m \n". $zipfile -> errorInfo(true);
+
+		  	$url = $this->server_uri."import.php?".$c_dir;
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			curl_close ($ch);		
+			if($server_output!=""){		
+			$json = json_decode($server_output);
+				if(isset($json->body->name) && count($json->body->name) > 0){
+
+					if(in_array($c_dir.':'.ucfirst($fileName), $json->body->name)){
+
+						$url = $this->server_uri.$c_dir."/".strtolower($fileName).".zip";
+						$headers = self::getHeaders($url);
+						$path	 = $c_dir."/".strtolower($fileName).".zip";
+						if ($headers['http_code'] === 200 and $headers['download_content_length'] < 1024*1024) {
+						  if (self::download($url, $path)){
+						  	require_once('unzip/pclzip.lib.php');
+							$zipfile = new PclZip($path);
+							if ($zipfile -> extract(PCLZIP_OPT_PATH, $c_dir.'/') == 0){
+								$msg = "\033[0;31mSorry,coult't import ".$c_dir."  \033[0m \n". $zipfile -> errorInfo(true);
+							}else{
+								unlink($path);
+								$msg = "\033[0;32m".'Module '.strtolower($fileName).' has been imported'."\033[0m \nGo to ".$module." access easily.\n";   
+							}
+						  }else{
+						  		$msg = "\033[0;31mSorry,coult't import ".$c_dir."  \033[0m \n";
+						  }
+						}else{
+								$msg = "\033[0;31mSorry, Module `".strtolower($fileName)."` is not available. \033[0m \n";
+						}
+
+					}else{
+								$msg = "\033[0;31mSorry, Module `".strtolower($fileName)."` is not available. \033[0m \n";
+						}
 				}else{
-					unlink($path);
-					$msg = "\033[0;32m".'Module '.strtolower($fileName).' has been imported'."\033[0m \nGo to ".$module." access easily.\n";   
-				}
-			  }else{
-			  		$msg = "\033[0;31mSorry,coult't import ".$c_dir."  \033[0m \n";
-			  }
+								$msg = "\033[0;31mSorry, Module `".strtolower($fileName)."` is not available. \033[0m \n";
+					 }
 			}else{
-					$msg = "\033[0;31mSorry, Module `".strtolower($fileName)."` is not available. \033[0m \n";
-			}
+								$msg = "\033[0;31mSorry, Module `".strtolower($fileName)."` is not available. \033[0m \n";
+				 }
+
+			
 		  }else{
 		  			$msg = "\033[0;31mPermission denied modules directory. coult't import ".$c_dir."  \033[0m \n";
 		  }
