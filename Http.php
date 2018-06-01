@@ -479,7 +479,7 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 							header("HTTP/1.1 400");
 				    		require_once _400_; 
 				    	}else{ 
-				    		die($this->setHeader(400,"Bad Request")); }
+				    		die($this->setHeader(400,"Bad Request"));
 					 }
 				}else{
 					$routeCount = count($this->route_url[$this->http_method]); $notMatchCount=0;
@@ -637,7 +637,7 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 							header("HTTP/1.1 400");
 				    		require_once _400_; 
 				    	}else{ 
-				    		die($this->setHeader(400,"Bad Request")); }
+				    		die($this->setHeader(400,"Bad Request")); 
 					    }
 				    }
 				}
