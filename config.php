@@ -19,6 +19,8 @@ $_GLOBALS['SH_AUTH'] = $SH_AUTH;
 
 define("BASE_URL", "http://localhost/sh-service/");
 
+define("_400_", "./400.php"); # Bad Request
+
 /* CONTROLLER */
 #=================================#
 define("CONTROLLER_PATH","controller/");
