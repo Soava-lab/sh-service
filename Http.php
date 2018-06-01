@@ -473,7 +473,14 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 		switch($this->http_method){
 			case ('GET' || 'POST' || 'PUT' || 'DELETE' || 'PAGE'): #echo self::getCurrentUri(); print_r($this->route_url[$this->http_method]);
 				if(count($this->route_url) == 0){
-					die($this->setHeader(400,"Bad Request"));
+					#die($this->setHeader(400,"Bad Request"));
+					if( defined('_400_') && file_exists(_400_)){
+				    		header("Access-Control-Allow-Origin: *");
+							header("HTTP/1.1 400");
+				    		require_once _400_; 
+				    	}else{ 
+				    		die($this->setHeader(400,"Bad Request")); }
+					 }
 				}else{
 					$routeCount = count($this->route_url[$this->http_method]); $notMatchCount=0;
 					foreach($this->route_url[$this->http_method] as $route){ #echo self::getCurrentUri();#echo $route;
@@ -624,7 +631,14 @@ class Http{ var $http_method; public $db; protected $route_url=[]; public $next_
 						# End Loop
 					} 
 					if($routeCount == $notMatchCount){
-				    	die($this->setHeader(400,"Bad Request"));
+				    	//die($this->setHeader(400,"Bad Request"));
+					if( defined('_400_') && file_exists(_400_)){
+				    		header("Access-Control-Allow-Origin: *");
+							header("HTTP/1.1 400");
+				    		require_once _400_; 
+				    	}else{ 
+				    		die($this->setHeader(400,"Bad Request")); }
+					    }
 				    }
 				}
 			break;
