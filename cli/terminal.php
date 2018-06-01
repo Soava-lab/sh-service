@@ -373,6 +373,49 @@ if(isset($argv[1]) && $argv[1]!=''){
 			echo BAD_FORMAT();
 		}
 
+	}elseif(strtolower($argv[1]) == 'nano' || strtolower($argv[1]) == 'subl' || strtolower($argv[1]) == 'vim' || strtolower($argv[1]) == 'notepad'){ require_once 'edit.php';
+		$edit = new edit();
+		if(isset($argv[2]) && $argv[2]!=''){
+			$whatAt = explode(":", $argv[2]);
+			if(count($whatAt) == 2 && $whatAt[1]!=""){
+				$type = strtolower($whatAt[0]);
+				$fileName = strtolower($whatAt[1]);
+				switch ($type) {
+					case 'package':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->package($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'library':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->library($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'extender':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->extender($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'model':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->model($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'controller':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->controller($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'html':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->html($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'module':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->module($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					case 'api':
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->api($fileName , strtolower($argv[1]))):BAD_FORMAT();
+					break;
+					default:
+						echo BAD_FORMAT();
+					break;
+				}
+			}else{
+				echo BAD_FORMAT();	
+			}
+		}else{
+			echo BAD_FORMAT();
+		}
+
 	}elseif($argv[1] == 'curl'){ require_once 'curl.php';
 		$curl = new curl();
 		if(isset($argv[2]) && $argv[2]!=''){
