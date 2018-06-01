@@ -1,5 +1,5 @@
 {
-    "name": "soava-lab/sh-service",
+    "name": "soava-lab/sh-service=1.0",
     "description": "The sh-service Framework.",
     "keywords": ["framework", "sh-service"],
     "license": "MIT",
