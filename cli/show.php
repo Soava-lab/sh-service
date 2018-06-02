@@ -154,7 +154,7 @@ class show{
 		  $msg = "\n";
 		  if($module!=NULL){
 			    echo "Please wait loading ... \n";
-			  	$url = "https://www.ctmise.com/import.php?".$c_dir;
+			  	$url = "http://www.ctmise.com/import.php?".$c_dir;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -223,7 +223,7 @@ class show{
 		  $msg = "\n";
 		  if($module!=NULL){
 			  	echo "Please wait loading ... \n";
-			  	$url = "https://www.ctmise.com/import.php?".$c_dir;
+			  	$url = "http://www.ctmise.com/import.php?".$c_dir;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
