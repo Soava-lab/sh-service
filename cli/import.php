@@ -3,7 +3,7 @@
 class import{
 	var $server_uri; 
 	public function __construct(){
-		$this->server_uri = 'https://www.ctmise.com/';
+		$this->server_uri = 'http://www.ctmise.com/';
 		$this->git_uri    = 'https://raw.githubusercontent.com/Soava-lab/warehouse/master/';
 	}
 	protected function getHeaders($url)
@@ -138,7 +138,7 @@ class import{
 			$json = json_decode($server_output);
 				if(isset($json->body->name) && count($json->body->name) > 0){
 
-					if(in_array($c_dir.':'.ucfirst($fileName), $json->body->name)){
+					if(in_array('modules:'.strtolower($fileName), $json->body->name)){
 
 						$url = $this->server_uri.$c_dir."/".strtolower($fileName).".zip";
 						$headers = self::getHeaders($url);
