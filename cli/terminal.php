@@ -8,7 +8,8 @@ define("GIT_TOKEN", "ebb6a6eaf37ea42851372278954f24ad1b742398");
 function remote_sh_cmd($url){ $baseUrl = $url;
 		ob_start();
 		$parse = parse_url($baseUrl); 
-		$message   =  "\n".'$'.$parse['scheme'].'://'.$parse['host'].substr(strstr($parse['path'],'service.php',true),0,-1).':$sh>';
+		$scheme= (isset($parse['scheme']))?$parse['scheme']:"";
+		$message   =  "\n".'$'.$scheme.'://'.$parse['host'].substr(strstr($parse['path'],'service.php',true),0,-1).':$sh>';
 		print $message;
 		flush();
 		ob_flush();
@@ -154,7 +155,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 					}
 				}else{
 					if($status == 'sh'){
-						echo "Please enter the sh service token.\n";
+						echo "Security token is missing, Check CMD : remote url token.\n";
 					}else{
 						echo "Sorry, could not find sh service.\n";
 					}
@@ -582,7 +583,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 							}
 						}else{
 							if($status == 'sh'){
-								echo "Please enter the sh service token.\n";
+								echo "Security token is missing, Check CMD : remote url token.\n";
 								ob_get_flush();
 								sh_cmd();
 							}else{
