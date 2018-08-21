@@ -138,7 +138,7 @@ class import{
 			$json = json_decode($server_output);
 				if(isset($json->body->name) && count($json->body->name) > 0){
 
-					if(in_array('modules:'.strtolower($fileName), $json->body->name)){
+					if(in_array('modules'.strtolower($fileName), $json->body->name)){
 
 						$url = $this->server_uri.$c_dir."/".strtolower($fileName).".zip";
 						$headers = self::getHeaders($url);
