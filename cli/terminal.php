@@ -3,6 +3,7 @@ require_once 'db.php';
 require_once 'is_exist.php';
 require_once 'curl.php';
 require_once 'get_synch.php';
+require_once 'pull_synch.php';
 define("GIT_TOKEN", "ebb6a6eaf37ea42851372278954f24ad1b742398");
 
 function remote_sh_cmd($url){ $baseUrl = $url;
@@ -71,6 +72,50 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 				break;
 				case 'api':
 					echo clean_color(getSynch::api($typeName,$dest,$remoteUrl));
+				break;
+									
+				default:
+					echo BAD_FORMAT();
+				break;
+			}
+
+		}else if(isset($basecmd) && $basecmd == 'pull'){
+			$dest = $type = "";
+			$cmdC = explode("/", $cmd);
+			
+			if(count($cmdC) == 3){
+				$cmd = "/".$cmdC[1];
+				$dest = $cmdC[2];
+			}
+			
+			$argv_cmd = ltrim(strstr($cmd,"/"),"/");
+			$whatAt = explode(":", $argv_cmd);
+			if(count($whatAt) == 2){
+				$type = strtolower($whatAt[0]);
+				$typeName = strtolower($whatAt[1]);			
+			}
+						
+			switch ($type) {
+				case 'controller':
+					echo clean_color(pullSynch::controller($typeName,$dest,$url));
+				break;
+				case 'model': 
+					echo clean_color(pullSynch::model($typeName,$dest,$url));
+				break;
+				case 'library':
+					echo clean_color(pullSynch::library($typeName,$dest,$url));
+				break;
+				case 'extender':
+					echo clean_color(pullSynch::extender($typeName,$dest,$url));
+				break;
+				case 'package':
+					echo clean_color(pullSynch::package($typeName,$dest,$url));
+				break;
+				case 'module':
+					echo clean_color(pullSynch::module($typeName,$dest,$url));
+				break;
+				case 'api':
+					echo clean_color(pullSynch::api($typeName,$dest,$url));
 				break;
 									
 				default:
