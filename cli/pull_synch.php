@@ -55,7 +55,7 @@ class pullSynch{
 		if($folder != NULL && $file != NULL){
 			$filename = $folder.'/'.$file;
 			if(file_exists($filename)){
-				copy($filename, $backup.$file);
+				copy($filename, $backup.time().'-'.$file);
 			}
 		}
 
