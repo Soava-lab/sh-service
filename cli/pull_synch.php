@@ -76,7 +76,7 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 	public function model($fileName,$dest=NULL,$url=NULL){ $msg=BAD_FORMAT(); $c_dir = 'model'; $file = $c_dir.'/'.ucfirst($fileName.'.php');
 		#echo $url;			
@@ -94,7 +94,7 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 	public function library($fileName,$dest=NULL,$url=NULL){ $msg=BAD_FORMAT(); $c_dir = 'library'; $file = $c_dir.'/'.ucfirst($fileName.'.php');
 		#echo $url;			
@@ -112,7 +112,7 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 	public function extender($fileName,$dest=NULL,$url=NULL){ $msg=BAD_FORMAT(); $c_dir = 'extender'; $file = $c_dir.'/'.ucfirst($fileName.'.php');
 		#echo $url;			
@@ -130,7 +130,7 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 	public function package($fileName,$dest=NULL,$url=NULL){ $msg=BAD_FORMAT(); $c_dir = 'package'; $file = $c_dir.'/'.ucfirst($fileName.'.php');
 		#echo $url;			
@@ -148,7 +148,7 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 	public function module($fileName,$dest=NULL,$url=NULL){ $msg=BAD_FORMAT(); $c_dir = 'modules'; $file = $c_dir.'/'.ucfirst($fileName.'.php');
 		#echo $url;			
@@ -166,7 +166,7 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 	public function api($fileName,$dest=NULL,$url=NULL){ $msg=BAD_FORMAT(); $c_dir = 'extender/init'; $file = $c_dir.'/'.ucfirst($fileName.'.php');
 		#echo $url;			
@@ -184,6 +184,6 @@ class pullSynch{
 	  }else{
 	  	$msg = "\033[0;31mPermission denied. coult't write ".$c_dir."  \033[0m \n";
 	  }
-	  echo $msg;
+	  return $msg;
 	}
 }
