@@ -33,6 +33,8 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 		$url = $url.$cmd;
 		if(isset($basecmd) && $basecmd == 'curl'){
 			echo "Sorry, Remote curl not allowed.\n";
+		}else if(strtolower($basecmd) == 'nano' || strtolower($basecmd) == 'subl' || strtolower($basecmd) == 'vim' || strtolower($basecmd) == 'notepad'){
+			echo "Sorry, Edit option is not allowed in remote.\n";
 		}else if(isset($basecmd) && $basecmd == 'remote' || $basecmd == '-i'){ 
 			echo "Sorry, Remote service not allowed inner of remote.\n";
 		}else if(isset($basecmd) && $basecmd == 'push'){
