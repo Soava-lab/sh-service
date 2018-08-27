@@ -5,6 +5,8 @@ require_once 'curl.php';
 require_once 'get_synch.php';
 require_once 'pull_synch.php';
 define("GIT_TOKEN", "ebb6a6eaf37ea42851372278954f24ad1b742398");
+error_reporting(0);
+ini_set("display_errors", 0);
 
 function remote_sh_cmd($url){ $baseUrl = $url;
 		ob_start();
@@ -20,7 +22,7 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 			ob_get_flush();
 			remote_sh_cmd($baseUrl);
 		}
-		if($cmd == 'exit'){ echo "Remote service Closed. \n"; ob_get_flush(); sh_cmd(); }	
+		if($cmd == 'exit'){ echo "Remote service Closed. \n"; ob_get_flush(); sh_cmd(); }
 		if($cmd == 'clear' || $cmd == 'reset' || $cmd == 'cls'){  
 				if(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'){
 					echo shell_exec("cls"); $cmd = '-v'; 
@@ -78,7 +80,7 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 				break;
 									
 				default:
-					echo BAD_FORMAT();
+					echo BAD_FORMAT('push');
 				break;
 			}
 
@@ -122,7 +124,7 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 				break;
 									
 				default:
-					echo BAD_FORMAT();
+					echo BAD_FORMAT('pull');
 				break;
 			}
 
@@ -167,14 +169,14 @@ if(isset($argv[1]) && $argv[1]!=''){
 					break;
 										
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('mk');
 					break;
 				}
 			}else{
-				echo BAD_FORMAT();
+				echo BAD_FORMAT('mk');
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('mk');
 		}
 	}elseif(strtolower($argv[1]) == 'remote' || strtolower($argv[1]) == '-i'){ 
 
@@ -212,7 +214,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 					echo "Sorry, could not find sh service.\n";
 			}
 	 	}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('remote');
 		}
 	 
 	}elseif(strtolower($argv[1]) == 'remove' || strtolower($argv[1]) == 'rm'){ require_once 'remove.php';
@@ -253,14 +255,14 @@ if(isset($argv[1]) && $argv[1]!=''){
 					break;
 										
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('rm');
 					break;
 				}
 			}else{
-				echo BAD_FORMAT();	
+				echo BAD_FORMAT('rm');	
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('rm');
 		}
 
 	}elseif(strtolower($argv[1]) == 'import' || strtolower($argv[1]) == 'im'){ require_once 'import.php';
@@ -272,20 +274,20 @@ if(isset($argv[1]) && $argv[1]!=''){
 				$typeName = strtolower($whatAt[1]);
 				switch ($type) {
 					case 'package':
-						echo (trim($type)!="" && $typeName)?clean_color($import->package($typeName)):BAD_FORMAT();
+						echo (trim($type)!="" && $typeName)?clean_color($import->package($typeName)):BAD_FORMAT('import');
 					break;
 					case 'module':
-						echo (trim($type)!="" && $typeName)?clean_color($import->module($typeName)):BAD_FORMAT();
+						echo (trim($type)!="" && $typeName)?clean_color($import->module($typeName)):BAD_FORMAT('import');
 					break;				
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('import');
 					break;
 				}
 			}else{
-				echo BAD_FORMAT();	
+				echo BAD_FORMAT('import');	
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('import');
 		}
 
 	}elseif(strtolower($argv[1]) == 'git'){ require_once 'import.php';
@@ -332,12 +334,12 @@ if(isset($argv[1]) && $argv[1]!=''){
 						}
 					break;				
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('compile');
 					break;
 				}
 			
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('compile');
 		}
 
 	}elseif(strtolower($argv[1]) == 'explain' || strtolower($argv[1]) == 'exp'){ require_once 'explain.php';
@@ -364,14 +366,14 @@ if(isset($argv[1]) && $argv[1]!=''){
 						echo clean_color(show::live_package("packages"));
 					break;
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('exp');
 					break;
 				}
 			}else{
-				echo BAD_FORMAT();	
+				echo BAD_FORMAT('exp');	
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('exp');
 		}
 
 	}elseif(strtolower($argv[1]) == 'show' || strtolower($argv[1]) == 'ls' || strtolower($argv[1]) == 'list'){ require_once 'show.php';
@@ -415,11 +417,11 @@ if(isset($argv[1]) && $argv[1]!=''){
 					break;
 										
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('ls');
 					break;
 				}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('ls');
 		}
 
 	}elseif(strtolower($argv[1]) == 'nano' || strtolower($argv[1]) == 'subl' || strtolower($argv[1]) == 'vim' || strtolower($argv[1]) == 'notepad'){ require_once 'edit.php';
@@ -431,40 +433,44 @@ if(isset($argv[1]) && $argv[1]!=''){
 				$fileName = strtolower($whatAt[1]);
 				switch ($type) {
 					case 'package':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->package($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->package($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'library':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->library($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->library($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'extender':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->extender($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->extender($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'model':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->model($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->model($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'controller':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->controller($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->controller($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'html':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->html($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->html($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'module':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->module($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->module($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					case 'api':
-						echo (trim($type)!="" && $fileName!='')?clean_color($edit->api($fileName , strtolower($argv[1]))):BAD_FORMAT();
+						echo (trim($type)!="" && $fileName!='')?clean_color($edit->api($fileName , strtolower($argv[1]))):BAD_FORMAT('editor');
 					break;
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('editor');
 					break;
 				}
 			}else{
-				echo BAD_FORMAT();	
+				echo BAD_FORMAT('editor');	
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('editor');
 		}
 
+	}else if(isset($argv[1]) && ($argv[1] == 'push' || $argv[1] == 'pull')){ 
+					echo $argv[1]." service only for remote sh \n";
+					ob_get_flush();
+					sh_cmd();
 	}elseif($argv[1] == 'curl'){ require_once 'curl.php';
 		$curl = new curl();
 		if(isset($argv[2]) && $argv[2]!=''){
@@ -481,14 +487,14 @@ if(isset($argv[1]) && $argv[1]!=''){
 						echo clean_color($curl->post($typeName));
 					break;											
 					default:
-						echo BAD_FORMAT();
+						echo BAD_FORMAT('curl');
 					break;
 				}
 			}else{
-				echo BAD_FORMAT();	
+				echo BAD_FORMAT('curl');	
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('curl');
 		}
 
 	}elseif(strtolower($argv[1]) == 'server' || strtolower($argv[1]) == '-s'){
@@ -501,10 +507,10 @@ if(isset($argv[1]) && $argv[1]!=''){
 				$port = strtolower($whatAt[1]);
 				shell_exec("php -S localhost:".$port);				
 			}else{
-				echo BAD_FORMAT();	
+				echo BAD_FORMAT('server');	
 			}
 		}else{
-			echo BAD_FORMAT();
+			echo BAD_FORMAT('server');
 		}
 			
 	}elseif(strtolower($argv[1]) == '-v' || strtolower($argv[1]) == '-version'){
@@ -601,7 +607,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 					}				 
 				
 				}else if(isset($baseCmd) && ($baseCmd == 'push' || $baseCmd == 'pull')){ 
-					echo $baseCmd." service only for remote sh \n";
+					echo $baseCmd." service only for remote sh \n"; die;
 					ob_get_flush();
 					sh_cmd();
 				}else if($baseCmd == 'remote' || $baseCmd == '-i'){
@@ -662,8 +668,14 @@ if(isset($argv[1]) && $argv[1]!=''){
 		}
 		sh_cmd();
 }
-function BAD_FORMAT(){
-	return clean_color("\033[0;31msh-service bad format command.\033[0m \n");
+function BAD_FORMAT(){ $args = func_get_args();
+	$suggest_cmd = (isset($args[0]))?$args[0].'_cmd':'';
+	require_once 'suggest-commands.php';
+	if(function_exists($suggest_cmd)){
+		return clean_color("\033[0;31msh-service bad format command.\033[0m \n".$suggest_cmd());
+	}else{
+		return clean_color("\033[0;31msh-service bad format command.\033[0m \n");
+	}
 }
 function clean_color($str){ 
 	 $codes = array("\033[0;32m", "\033[0m", "\033[0;31m","\033[0m","\033[1;33m","\033[0;37m","\033[0;33m","\033[1;33m","\033[43m");
