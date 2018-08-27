@@ -20,7 +20,7 @@ function remote_sh_cmd($url){ $baseUrl = $url;
 			ob_get_flush();
 			remote_sh_cmd($baseUrl);
 		}
-		if($cmd == 'exit') exit(0);	
+		if($cmd == 'exit'){ echo "Remote service Closed. \n"; ob_get_flush(); sh_cmd(); }	
 		if($cmd == 'clear' || $cmd == 'reset' || $cmd == 'cls'){  
 				if(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'){
 					echo shell_exec("cls"); $cmd = '-v'; 
@@ -542,7 +542,7 @@ if(isset($argv[1]) && $argv[1]!=''){
 				ob_get_flush();
 				sh_cmd();
 			}
-			if(strtolower($cmd) == 'exit') exit(0);
+			if(strtolower($cmd) == 'exit'){ echo "Bye \n"; exit(0); }
 			if($cmd == 'clear' || $cmd == 'reset' || $cmd == 'cls'){  
 				if(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'){
 					echo shell_exec("cls"); $cmd = '-v'; 
