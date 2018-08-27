@@ -598,8 +598,10 @@ if(isset($argv[1]) && $argv[1]!=''){
 						sh_cmd();
 					}				 
 				
-				}else if(isset($baseCmd) && $baseCmd == 'push'){ 
-					echo "Push service only for remote sh \n";
+				}else if(isset($baseCmd) && ($baseCmd == 'push' || $baseCmd == 'pull')){ 
+					echo $baseCmd." service only for remote sh \n";
+					ob_get_flush();
+					sh_cmd();
 				}else if($baseCmd == 'remote' || $baseCmd == '-i'){
 					$domain = strtolower($explode[1]);			
 					$domain = rtrim($domain,"/");					
